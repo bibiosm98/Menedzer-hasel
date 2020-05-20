@@ -26,52 +26,52 @@ router.post('/', (req, res) => {
                 // console.log("KLUCZ SERWERA\n")
                 // console.log(MY_KEY)
                 // console.log(message)
-                    const key = new RSA(serverPublicKey)
-                    key.setOptions('pkcs1_oaep')
-                    messageEncrypted = key.encrypt(message, 'base64')
-                    // console.log(messageEncrypted)
- 
-                    try{
-                        request.post({
-                            uri: logInLink,
-                            headers: {'Content-Type': 'text/plain', token: "dasdafafafas..."},
-                            body: messageEncrypted
-                        }, (error, res, body) => {
-                            console.log(body)
-                        });
+                const key = new RSA(serverPublicKey)
+                key.setOptions('pkcs1_oaep')
+                messageEncrypted = key.encrypt(message, 'base64')
+                // console.log(messageEncrypted)
+
+                try{
+                    request.post({
+                        uri: logInLink,
+                        headers: {'Content-Type': 'text/plain', token: "dasdafafafas..."},
+                        body: messageEncrypted
+                    }, (error, res, body) => {
+                        console.log(body)
+                    });
 
 
-                        // request.post(link,
-                        //     {
-                    
-                        //     },
-                        //     (error, response, body) => {
-                        //         if (!error && response.statusCode == 200) {
-                        //             console.log("Body: ")
-                        //             console.log(body)
-                        //             // console.log("Response: ")
-                        //             // console.log(response)
-                        //         }
-                        //         data.response = body.response
-                                
-                        //         if(data.response === 'OK'){
-                        //             // console.log("IF")
-                        //             data.response = null
-                        //             res.render('./index', {data: data})
-                        //         }else{
-                        //             // console.log("ELSE")
-                        //             res.render('signup', {data: data})
-                        //         }
-                        //     })
-                    }catch{
-                        res.send("Error creating SignIn: " + data.response)
-                    }
-
+                    // request.post(link,
+                    //     {
+                
+                    //     },
+                    //     (error, response, body) => {
+                    //         if (!error && response.statusCode == 200) {
+                    //             console.log("Body: ")
+                    //             console.log(body)
+                    //             // console.log("Response: ")
+                    //             // console.log(response)
+                    //         }
+                    //         data.response = body.response
+                            
+                    //         if(data.response === 'OK'){
+                    //             // console.log("IF")
+                    //             data.response = null
+                    //             res.render('./index', {data: data})
+                    //         }else{
+                    //             // console.log("ELSE")
+                    //             res.render('signup', {data: data})
+                    //         }
+                    //     })
+                }catch{
+                    res.send("Error creating SignIn: " + data.response)
+                }
             }
         });
     }catch(e){
         console.log(e)
     }
+    res.render('index', {data: "aa"})
 })
 
 

@@ -12,6 +12,30 @@
             <label>Password:</label>
             <input type="password" name="password" value="<%=data.password%>">
         </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Sign in</button>
+</form>
+
+<br><br><br>
+
+<h1>Logowanie robocze</h1>
+
+<select id="selectRow" name="user">
+    <% users.forEach(user =>{ %>
+        <option label="<%= user.login %>" value="<%= user.login %>">
+            <%= user.login %>  -  <%= user.password %>    
+        </option>
+    <% }) %>
+</select> 
+<form action="/signin" method="POST">
+    <div class="form-row">
+        <div class="form-item">
+            <label>Login:</label>
+            <input id="loginRow" type="text" name="login" value="<%=data.login%>">
+        </div>
+        <div class="form-item">
+            <label>Password:</label>
+            <input id="passwordRow" type="password" name="password" value="<%=data.password%>">
         </div>
     </div>
     <button class="btn btn-primary" type="submit">Sign in</button>
