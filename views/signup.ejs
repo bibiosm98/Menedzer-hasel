@@ -1,0 +1,25 @@
+<h1>Strona rejestracji signup.js</h1>
+<h1>Załóż konto</h1>
+
+
+<form action="/signup" method="POST">
+    <div class="form-row">
+        <div class="form-item">
+            <label>Email:</label>
+            <input type="email" name="email" value="<%= data.email %>">
+        </div>
+        <div class="form-item">
+            <label>Login:</label>
+            <input type="text" name="login" value="<%= data.login %>">
+        </div>
+        <div class="form-item">
+            <label>Password:</label>
+            <input type="password" name="password" value="">
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Create new account</button>
+</form>
+
+<br><br><br>
+
+<a href="/">Sign In</a>
