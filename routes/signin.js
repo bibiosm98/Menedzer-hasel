@@ -15,6 +15,7 @@ router.post('/', (req, res) => {
     let messageEncrypted
     try{
         request.get(publicKeyLink,(error, response, body) => {
+            console.log("SIGNV_IN_ GET")
             if (!error && response.statusCode == 200) {
                 serverPublicKey = body
                 const key = new RSA(serverPublicKey)
@@ -60,5 +61,35 @@ router.post('/', (req, res) => {
     }
 })
 
+router.get('/', (req, res) => {
+    let publicKeyLink = 'https://fast-ridge-60024.herokuapp.com/api/GetPublicKey'
+    let logInLink = 'https://fast-ridge-60024.herokuapp.com/api/SignIn'
+    let getLink = 'https://fast-ridge-60024.herokuapp.com/api/AllSites'
+    let data = []
+    let message = JSON.stringify({"login": req.body.login, "password": req.body.password})
+
+    let serverPublicKey
+    let messageEncrypted
+    try{
+        request.get({
+            uri: getLink,
+            headers: {'Content-Type': 'application/json', 'token': token},
+            body: ""
+        },
+        (error, response, body) => {
+            if (!error && response.statusCode == 200) {
+                console.log("ASd")
+                console.log(body)
+                JSON.parse(body).forEach(element => {
+                    data.push(element)
+                });
+            }
+            res.render('./user/allSites', {data: data})
+        })
+    }catch(e){
+        console.log(e)
+        res.send("SignIn error while GET publicServerKey :(")
+    }
+})
 
 module.exports = router

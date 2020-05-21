@@ -1,0 +1,28 @@
+<h1>updateData</h1>
+<h1>Zmiana rekordu z hasłem i danymi do strony</h1>
+
+<form action="/user/updateLoginData/<%=id%>" method="POST">
+    <div class="form-row">
+        <div class="form-item">
+            <label>Site:</label>
+            <input id="site" type="text" name="site" value="<%=data.site%>">
+        </div>
+        <div class="form-item">
+            <label>Login:</label>
+            <input id="login" type="text" name="login" value="<%=data.login%>">
+        </div>
+        <div class="form-item">
+            <label>Password:</label>
+            <input id="password" type="text" name="password" value="<%=data.password%>">
+        </div>
+        <div class="form-item">
+            <label>Password:</label>
+            <input id="passwordRepeat" type="text" name="passwordRepeat" value="<%=data.passwordRepeat%>">
+        </div>
+        <div class="form-item">
+            <label>Note:</label>
+            <input id="note" type="text" name="note" value="<%=data.note%>">
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Update Record</button>
+</form>
