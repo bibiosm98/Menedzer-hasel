@@ -1,0 +1,31 @@
+<h1>Zalogowany User</h1>
+<h1>AllSites - rekordy posiadanych haseł</h1>
+
+
+
+
+
+<% data.forEach(user =>{ %>
+<form action="/user/updateLoginData/<%=user._id.$oid%>" method="POST">
+    <div>ID:                 <%= user._id.$oid %></div>
+    <div>Site:               <%= user.site %> </div>
+    <div>Login:              <%= user.login %> </div>
+    <div>passwordStrength:   <%= user.passwordStrength %> </div>
+    <div>Note:               <%= user.note %> </div>
+    <button type="sumbit">Update Password</button>
+</form>
+<br>
+<div>
+    <a href="/user/getLoginData/<%=user._id.$oid%>">View Password</a>
+</div>
+<div>
+    <a href="/user/deleteLoginData/<%=user._id.$oid%>">Remove Rekord</a>
+</div>
+<br><br><br>
+
+<% }) %>
+
+
+<div>
+    <a href="/user/newLoginData">Dodaj nowy rekord</a>
+</div>

@@ -10,7 +10,7 @@
         </div>
         <div class="form-item">
             <label>Password:</label>
-            <input type="password" name="password" value="<%=data.password%>">
+            <input type="text" name="password" value="<%=data.password%>">
         </div>
     </div>
     <button class="btn btn-primary" type="submit">Sign in</button>
@@ -23,7 +23,7 @@
 <select id="selectRow" name="user">
     <% users.forEach(user =>{ %>
         <option label="<%= user.login %>" value="<%= user.login %>">
-            <%= user.login %>  -  <%= user.password %>    
+            <%= user.login %>_____<%= user.password %>    
         </option>
     <% }) %>
 </select> 
@@ -35,7 +35,7 @@
         </div>
         <div class="form-item">
             <label>Password:</label>
-            <input id="passwordRow" type="password" name="password" value="<%=data.password%>">
+            <input id="passwordRow" type="text" name="password" value="<%=data.password%>">
         </div>
     </div>
     <button class="btn btn-primary" type="submit">Sign in</button>
@@ -44,3 +44,9 @@
 <br><br><br>
 
 <a href="/signup">Sign Up</a>
+
+<br><br><br>
+
+<a href="https://fast-ridge-60024.herokuapp.com/api/Populate">Populate DataBase</a>
+<br><br>
+<a href="https://fast-ridge-60024.herokuapp.com/api/DropDb">Drop DataBase</a>

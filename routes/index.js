@@ -27,16 +27,10 @@ router.get('/', (req, res) => {
         res.render('index', {data: {
             login: "wocolok",
             password: "g!AWS{=MA,2kk4Sn",
-            error: "error getting AllData"
+            error: "error getting AllData",
+            users: users
         }})
     }
-    // res.render('index', {
-    // data: {
-    //     login: "wocolok",
-    //     password: "g!AWS{=MA,2kk4Sn"
-    // },
-    //     users: users
-    // })
 })
 
 module.exports = router
