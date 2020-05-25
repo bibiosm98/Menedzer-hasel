@@ -1,17 +1,9 @@
-<!-- <div>
-    <h1>Menedżer haseł</h1>
-    <div class="newrecord">
-        <a href="/user/newLoginDataView">Dodaj nowy rekord</a>
-    </div>
-    <div class="logOut">
-        <a href="/logUot">Wyloguj</a>
-    </div>
-</div> -->
 <nav class="header-nav">
     <a class="header-title" href="/">Menedżer Haseł</a>
     <ul>
         <%if(token !== '') { %>
             <li><a href="/user/newLoginDataView">Dodaj nowy rekord</a></li>
+            <li><a href="/userAccount">Konto użytkownika</a></li>
             <li><a href="/signin/signout">Wyloguj</a></li>
         <% }else{ %>
             <li>

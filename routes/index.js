@@ -3,6 +3,9 @@ const router = express.Router()
 const request = require('request')
 
 router.get('/', (req, res) => {
+    if(token !== ''){
+        res.redirect('signin')
+    }
     let link = 'https://fast-ridge-60024.herokuapp.com/api/AllData'
     let data
     let users = []

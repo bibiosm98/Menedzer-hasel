@@ -7,17 +7,7 @@
 
         <div class="myform">
             <form action="/signin" method="POST">
-                <div class="form-row">
-                    <div class="form-signin">
-                        <label>Login:</label>
-                        <input id="login" type="text" name="login" value="<%=data.login%>">
-                    </div>
-                    <div class="form-signin">
-                        <label>Password:</label>
-                        <input id="password" type="text" name="password" value="<%=data.password%>">
-                    </div>
-                </div>
-                <div>
+                    <%- include('user/signin.ejs') %>
                     <button class="btn btn-signin" type="submit">Sign in</button>
                 </div>
             </form>

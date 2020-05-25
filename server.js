@@ -6,6 +6,7 @@ const indexRoute = require('./routes/index')
 const userRoute = require('./routes/user')
 const signupRoute = require('./routes/signup')
 const signinRoute = require('./routes/signin')
+const userAccountRoute = require('./routes/userAccount')
 
 global.token = ''
 
@@ -19,6 +20,7 @@ app.use('/', indexRoute)
 app.use('/user', userRoute)
 app.use('/signup', signupRoute)
 app.use('/signin', signinRoute)
+app.use('/userAccount', userAccountRoute)
 app.use(express.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.listen(process.env.PORT || 3000)
