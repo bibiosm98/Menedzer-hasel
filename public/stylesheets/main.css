@@ -51,6 +51,7 @@ body{
     padding: 20px;
     border: 3px solid #000000;
     overflow: hidden;
+    display: grid;
     /* flex-basis: 1;
     flex-grow: 1; */
 }
@@ -59,8 +60,9 @@ body{
     padding: 15px;
 }
 .flexbox-item button{
-    margin: 10px;
-    float: right;
+    width: 50%;
+    margin: 5px;
+    float: left;
     padding: 15px;
     background-color: yellow;
 }
@@ -109,4 +111,37 @@ body{
 }
 a{  
     color: rgb(97, 30, 18);
+}
+
+.display-mid{
+    font-size: 1.6rem;
+    margin: auto;
+    padding: 20px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    margin-left: 2rem;
+    position: relative;
+    background-color: rgb(62, 95, 202);
+    border: 2px solid #000000;
+}
+.form-row{
+    /* display: flexbox;
+    margin-bottom: .5rem; */
+}
+.form-item{
+    position: relative;
+}
+.form-row label{
+    float: left;
+}
+.form-row input{
+}
+
+h1{
+    text-align: center;
+}
+
+.logowanie-select{
+    margin-left: 43%;
 }
