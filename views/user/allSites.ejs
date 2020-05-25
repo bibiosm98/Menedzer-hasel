@@ -1,38 +1,31 @@
-<h1>Zalogowany User</h1>
-<h1>AllSites - rekordy posiadanych haseł</h1>
+<!-- <h1>Zalogowany User</h1>
+<h1>AllSites - rekordy posiadanych haseł</h1> -->
 
-<div class="newrecord">
-    <a href="/user/newLoginDataView">Dodaj nowy rekord</a>
-</div>
-<br><br><br>
-
-<div class="grid-container">
-<%// for(let i=0; i<10; i++){ %>
-<% data.forEach(user =>{ %>
-    <div>
-        <form action="/user/updateLoginDataView/<%=user._id.$oid%>" method="POST">
-            <div>ID:                 <%= user._id.$oid %></div>
-            <div>Site:               <%= user.site %> </div>
-            <div>Login:              <%= user.login %> </div>
-            <div>passwordStrength:   <%= user.passwordStrength %> </div>
-            <div>Note:               <%= user.note %> </div>
-            <button type="sumbit">Update Password</button>
-        </form>
-        <br>
-        <div>
-            <a href="/user/getLoginData/<%=user._id.$oid%>">View Password</a>
+<div class="flexbox-container">
+    <%// for(let i=0; i<10; i++){ %>
+    <% data.forEach(user =>{ %>
+        <div class="flexbox-item">
+            <form action="/user/updateLoginDataView/<%=user._id.$oid%>" method="POST">
+                <li>ID:                 <%= user._id.$oid %></li>
+                <li>Site:               <%= user.site %> </li>
+                <li>Login:              <%= user.login %> </li>
+                <li>passwordStrength:   <%= user.passwordStrength %> </li>
+                <li>Note:               <%= user.note %> </li>
+                <button type="sumbit">Update Password</button>
+            </form>
+            <div>
+                <a href="/user/getLoginData/<%=user._id.$oid%>">View Password</a>
+            </div>
+            <div>
+                <a href="/user/deleteLoginData/<%=user._id.$oid%>">Remove Record</a>
+            </div>
         </div>
-        <div>
-            <a href="/user/deleteLoginData/<%=user._id.$oid%>">Remove Record</a>
-        </div>
-    </div>
-<br><br><br>
-<% }) %>
-<%// } %>
+    <% }) %>
+    <%// } %>
 </div>
 
 
-
+<!-- 
 <div>
     <a href="/user/newLoginDataView">Dodaj nowy rekord</a>
-</div>
+</div> -->

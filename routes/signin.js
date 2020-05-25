@@ -12,8 +12,14 @@ router.post('/', (req, res) => {
             token = token1
             getUserAllSites(token1).then((data) => {
                 res.render('./user/allSites', {data: data})
+            }).catch((e) => {
+                res.redirect('/')
             })
+        }).catch((e) => {
+            res.redirect('/')
         })
+    }).catch((e) => {
+
     })
 })
 
@@ -23,9 +29,13 @@ router.get('/', (req, res) => {
     })
 })
 
+router.get('/signout', (req, res) => {
+    token = ''
+    res.redirect('/')
+})
+
 function getPublicKeyFromServer(message){
     let publicKeyLink = 'https://fast-ridge-60024.herokuapp.com/api/GetPublicKey'
-    let messageEncrypted = ''
     return new Promise((resolve, reject) => {
         try{
             request.get(publicKeyLink,(error, response, body) => {
@@ -36,7 +46,6 @@ function getPublicKeyFromServer(message){
                     key.setOptions('pkcs1_oaep')
                     resolve(key.encrypt(message, 'base64'))
                 }
-               
             })
         }
         catch(e){
@@ -55,9 +64,15 @@ function postDataAndGetToken(messageEncrypted){
                 headers: {'Content-Type': 'text/plain'},
                 body: messageEncrypted
             }, (error, response, body) => {
-                console.log(body)
-                let token2 = JSON.parse(body).response
-                resolve(token2)
+                if(JSON.parse(body).response == "NOT LOGGED IN"){
+                    console.log('not logged in')
+                    reject('NOT LOGGED IN')
+                }else{
+                    console.log(body)
+                    console.log(JSON.parse(body).response)
+                    let token2 = JSON.parse(body).response
+                    resolve(token2)
+                }
             })
         }catch(e){
             reject(e)
@@ -79,9 +94,13 @@ function getUserAllSites(token){
                 if (!error && response.statusCode == 200) {
                     console.log("ASd")
                     console.log(body)
-                    JSON.parse(body).forEach(element => {
-                        data.push(element)
-                    });
+                    try{
+                        JSON.parse(body).forEach(element => {
+                            data.push(element)
+                        });
+                    }catch(e){
+                        reject(e)
+                    }
                     resolve(data)
                 }
             })

@@ -8,70 +8,105 @@
     color: var(--color-text-light)
 }
 
-/* *, *::before, *::after{
-    box-sizing: border-box;
-} */
 body{
     background: linear-gradient(to right, 
     var(--color-background-dark), 
     var(--color-background-light));
 }
 
-.container{
-    /* max-width: 1200px; */
-    /* width: 50%; */
-    /* margin: 0 auto; */
-    /* margin-bottom: 3rem; */
-
-    margin-top: 10em;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
-    
+.header-nav{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem 5rem 1rem 5rem;
+    font-size: 2.5rem;
 }
-.signin{ 
-    width: 30%;
-
-    margin-left: auto;
-    margin-right: auto;
-    /* position: absolute; */
-    
+.header-nav ul{
+    display: flex;
+    margin: 0;
+    padding: 0;
 }
 
-.myform{
-    width: 30em;
+.header-nav li {
+    list-style: none;
+    margin-right: 50px;
+}
+.flexbox-container{
+    font-size: 1.3rem;
+    margin: auto auto;
+    display: flex;
+    justify-content: center;
+    width: 70%;
+    padding: 20px; 
+    align-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.flexbox-item{
+    width: 25%;
+    height: var(width 30%);
+    background-color: rgb(108, 100, 146);
+    margin: 20px;
+    padding: 20px;
+    border: 3px solid #000000;
+    overflow: hidden;
+    /* flex-basis: 1;
+    flex-grow: 1; */
+}
+.flexbox-item li{
+    margin: 20px;
+    padding: 15px;
+}
+.flexbox-item button{
+    margin: 10px;
+    float: right;
+    padding: 15px;
+    background-color: yellow;
+}
+
+.flexbox-item a{
+    width: 50%;
+    margin: 5px;
+    padding: 5px;
+    color: red;
+    background-color: rgb(233, 134, 116);
+    float: left;
+    border: 2px solid #000000;
+}
+
+
+
+
+
+
+
+
+
+
+.flexbox-signin{
+    min-height: 100px;
+    min-width: 20%;
+    background-color: rgb(62, 95, 202);
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #02285a;
+    align-content: flex-end;
+}
+.title-signin{
     text-align: center;
 }
-
-.form-signin{
-    
-    display: flex;
+.form-signin label{
+    text-align: start;
 }
-label{
-    float: left;
+.form-signin input{
+    margin-left: auto;
+    float: right;
+    width: 50%;
 }
-input{
+.btn{
     float: right;
 }
-
-a:link{
-    font-size: 20px;
-    color: white;
-}
-a:visited:{
-    font-size: 20px;
-    color: white;
-}
-.grid-container{
-    display: grid;
-    grid-template-columns: 200px, 250px;
-    grid-auto-rows: minmax(150px, auto);
-    justify-items: stretch;
-    align-items: stretch;
-}
-.newrecord{
-    width: 50px;
-    height: 50px;
-    color: red;
+a{  
+    color: rgb(97, 30, 18);
 }

@@ -7,7 +7,7 @@ const userRoute = require('./routes/user')
 const signupRoute = require('./routes/signup')
 const signinRoute = require('./routes/signin')
 
-global.token
+global.token = ''
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname+ '/views');

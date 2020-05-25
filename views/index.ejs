@@ -1,36 +1,38 @@
-<div class="signin">
-    <div class="title-singin">
-        <h1>Strona główna index.js</h1>
-        <h1>Zaloguj się</h1>
-    </div>
+<div class="flexbox-container">
+    <div class="flexbox-signin">
+        <div class="title-signin">
+            <h1>Strona główna index.js</h1>
+            <h1>Zaloguj się</h1>
+        </div>
 
-    <div class="myform">
-        <form action="/signin" method="POST">
-            <div class="form-row">
-                <div class="form-signin">
-                    <label>Login:</label>
-                    <input id="login" type="text" name="login" value="<%=data.login%>">
+        <div class="myform">
+            <form action="/signin" method="POST">
+                <div class="form-row">
+                    <div class="form-signin">
+                        <label>Login:</label>
+                        <input id="login" type="text" name="login" value="<%=data.login%>">
+                    </div>
+                    <div class="form-signin">
+                        <label>Password:</label>
+                        <input id="password" type="text" name="password" value="<%=data.password%>">
+                    </div>
                 </div>
-                <div class="form-signin">
-                    <label>Password:</label>
-                    <input id="password" type="text" name="password" value="<%=data.password%>">
+                <div>
+                    <button class="btn btn-signin" type="submit">Sign in</button>
                 </div>
-            </div>
-            <div>
-                <a class="btn btn-signup" href="/signup">Sign Up</a>
-                <button class="btn btn-signin" type="submit">Sign in</button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-    <div>
-        <h1>Logowanie robocze</h1>
-        <select id="selectRow" name="user">
-            <% users.forEach(user =>{ %>
-                <option label="<%= user.login %>" value="<%= user.login %>">
-                    <%= user.login %>_____<%= user.password %>    
-                </option>
-            <% }) %>
-        </select>
-    </div>
-    <a href="https://fast-ridge-60024.herokuapp.com/api/Populate">Populate DataBase</a>
+</div>
+
+
+<div>
+    <h1>Logowanie robocze</h1>
+    <select id="selectRow" name="user">
+        <% users.forEach(user =>{ %>
+            <option label="<%= user.login %>" value="<%= user.login %>">
+                <%= user.login %>_____<%= user.password %>    
+            </option>
+        <% }) %>
+    </select>
 </div>
