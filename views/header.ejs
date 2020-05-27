@@ -1,5 +1,5 @@
 <nav class="header-nav">
-    <a class="header-title" href="/">Menedżer Haseł</a>
+    <a class="header-title" href="/">Password Manager</a>
     <ul>
         <%if(token !== '') { %>
             <li><a href="/user/newLoginDataView">Dodaj nowy rekord</a></li>
@@ -7,13 +7,7 @@
             <li><a href="/signin/signout">Wyloguj</a></li>
         <% }else{ %>
             <li>
-                <a href="/signup">Sign Up</a>
-            </li>
-            <li>
-                <a href="/signup">Sign Up</a>
-            </li>
-            <li>
-                <a href="/signup">Sign Up</a>
+                <a class="a-big"href="/signup">Sign Up</a>
             </li>
         <% } %>
     </ul>

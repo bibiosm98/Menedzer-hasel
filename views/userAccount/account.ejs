@@ -1,9 +1,19 @@
-<h1 class="page-header">Account EJS</h1>
-
-<%= data.email %>
-<%= data.id.$oid %>
-<%= data.login %>
-
-
-
-<a href="/userAccount/delete">Usuń konto</a>
+<h1 class="page-header">Account Data</h1>
+<div class="form-row">
+    <div class="form-item">
+        <label>Email: 
+            <div class="data"><%=data.email%></div>
+        </label>
+    </div>
+    <div class="form-item">
+        <label>Login: 
+            <div class="data"><%=data.login%></div>
+        </label> 
+    </div>
+    <div class="form-item">
+        <label>Id: 
+            <div id="password"><%=data.id.$oid%></div>
+        </label>
+    </div>
+</div>
+<a class="btn btn-danger btn-to-right" href="/userAccount/delete">Usuń konto</a>

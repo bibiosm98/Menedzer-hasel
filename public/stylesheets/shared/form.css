@@ -4,10 +4,6 @@
     --form-input-border-color: hsl(var(--color-base-hue), 100%, 50%);
 }
 
-.flexbox-container{
-
-}
-
 .form-item{
     display: flex;
     flex-direction: column;
@@ -31,9 +27,7 @@
 
 .form-item li{
     font-size: 1rem;
-    list-style: none;
     overflow: hidden;
-    flex-shrink: 0;
 }
 
 li:hover{
@@ -45,14 +39,30 @@ li:hover{
     max-width: 60%;
 }
 
-li div{
-    
-    float: right;
-    max-width: 20%;
+.form-item input{
+    max-width: 60%;
+}
+
+.form-signin{
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
 
 
+li div{
+    max-width: 20%;
+}
+
+label div{
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+label div:hover{
+    overflow: visible;
+}
 
 
 

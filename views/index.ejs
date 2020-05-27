@@ -1,28 +1,26 @@
-<div class="flexbox-container">
-    <div class="flexbox-signin">
-        <div class="title-signin">
-            <h1 class="page-header">Strona główna index.js</h1>
-            <h1 class="page-header">Zaloguj się</h1>
-        </div>
+<div class="index">
+    <div class="title-signin">
+        <!-- <h1 class="page-header">Strona główna index.js</h1> -->
+        <h1 class="page-header-signin">Sign in</h1>
+    </div>
 
-        <div class="myform">
-            <form action="/signin" method="POST">
-                    <%- include('user/signin.ejs') %>
-                    <button class="btn btn-primary" type="submit">Sign in</button>
-                </div>
-            </form>
-        </div>
+    <div class="form-signin">
+        <form action="/signin" method="POST">
+                <%- include('user/signin.ejs') %>
+            <div>
+                <button class="btn btn-primary" type="submit">Sign in</button>
+            </div>
+        </form>
     </div>
 </div>
 
-
-<div class="logowanie-select">
-    <h2 class="page-header">Logowanie robocze</h2>
-    <select id="selectRow" name="user">
-        <% users.forEach(user =>{ %>
-            <option label="<%= user.login %>" value="<%= user.login %>">
-                <%= user.login %>_____<%= user.password %>    
-            </option>
-        <% }) %>
-    </select>
-</div>
+    <div class="row-signin">
+        <h2 class="page-header">Logowanie robocze</h2>
+        <select id="selectRow" name="user">
+            <% users.forEach(user =>{ %>
+                <option label="<%= user.login %>" value="<%= user.login %>">
+                    <%= user.login %>_____<%= user.password %>    
+                </option>
+            <% }) %>
+        </select>
+    </div>

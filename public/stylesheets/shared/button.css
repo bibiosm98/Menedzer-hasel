@@ -50,3 +50,6 @@
     color: var(--color-btn-danger-text);
     background-color: var(--color-btn-danger-background-dark);
 }
+.btn-to-right{
+    float: right;
+}
