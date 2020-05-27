@@ -1,22 +1,129 @@
-/* :root{
+:root{
     --form-label-font-size: 1.2rem;
     --form-input-background-color: hsl(var(--color-base-hue), 100%, 31%);
     --form-input-border-color: hsl(var(--color-base-hue), 100%, 50%);
 }
 
-.form-row{
-    display: flex;
-    margin-bottom: .5rem;
+.flexbox-container{
+
 }
 
 .form-item{
     display: flex;
     flex-direction: column;
-    margin-left: 2rem;
-    flex-grow: 1;
-    flex-basis: 0;
+    margin: 2rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 2px solid #000000;
+    background-color: var(--form-input-background-color);
+    overflow: hidden;
 }
-.form-item:first-child{
+
+.form-item:hover{
+    background-color: rgb(111, 142, 226);
+    overflow: visible;
+}
+
+.form-item label{
+    font-size: 1.25rem;
+    color: white;
+}
+
+.form-item li{
+    font-size: 1rem;
+    list-style: none;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+li:hover{
+    overflow: visible;
+}
+
+.form-item div{
+    float: right;
+    max-width: 60%;
+}
+
+li div{
+    
+    float: right;
+    max-width: 20%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* .data{
+    margin-left: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.data:hover{
+    overflow: visible;
+} */
+
+
+
+
+
+
+/* .flexbox-item{
+    width: 25%;
+    height: var(width 30%);
+    background-color: rgb(108, 100, 146);
+    margin: 20px;
+    padding: 20px;
+    border: 3px solid #000000;
+    overflow: hidden;
+    display: grid;
+} */
+/* .flexbox-item li{
+    margin: 20px;
+    padding: 15px;
+}
+.flexbox-item button{
+    width: 50%;
+    margin: 5px;
+    float: left;
+    padding: 15px;
+    background-color: yellow;
+}
+
+.flexbox-item a{
+    width: 50%;
+    margin: 5px;
+    padding: 5px;
+    color: red;
+    background-color: rgb(233, 134, 116);
+    float: left;
+    border: 2px solid #000000; 
+} */
+
+
+
+
+
+
+
+
+/* .form-item:first-child{
     margin-left: 0;
 }
 .form-item-no-grow{
@@ -66,5 +173,3 @@
     color: var(--color-text-light);
     font-size: inherit;
 } */
-
-

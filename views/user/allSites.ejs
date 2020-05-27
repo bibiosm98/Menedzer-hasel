@@ -1,33 +1,35 @@
-<!-- <h1>Zalogowany User</h1>
-<h1>AllSites - rekordy posiadanych haseł</h1> -->
+<h1 class="page-header">Zalogowany User</h1>
+<h1 class="page-header">AllSites - rekordy posiadanych haseł</h1>
 
 <div class="flexbox-container">
-    <%// for(let i=0; i<10; i++){ %>
     <% data.forEach(user =>{ %>
-        <div class="flexbox-item">
+        <div class="form-item">
             <form action="/user/updateLoginDataView/<%=user._id.$oid%>" method="POST">
-                <li>ID:                 <%= user._id.$oid %></li>
-                <li>Site:               <%= user.site %> </li>
-                <li>Login:              <%= user.login %> </li>
-                <li>passwordStrength:   <%= user.passwordStrength %> </li>
-                <li>Note:               <%= user.note %> </li>
+                <li>
+                    <label>ID: </label>
+                    <div class="form-item-value"><%= user._id.$oid %></div>
+                </li>
+                <li>
+                    <label>Site: </label>
+                    <div class="form-item-value"><%= user.site %></div>
+                </li>
+                <li>
+                    <label>Login: </label>
+                    <div class="form-item-value"><%= user.login %></div>
+                </li>
+                <li>
+                    <label>PasswordStrength: </label>
+                    <div class="form-item-value"><%= user.passwordStrength %></div>
+                </li>
+                <li>
+                    <label>Note: </label>
+                    <div class="form-item-value"><%= user.note %></div>
+                </li>
+                
                 <button class="btn btn-primary" type="sumbit">Update Password</button>
-                <a class="btn btn-primary" href="/user/getLoginData/<%=user._id.$oid%>">View Password</a>
-                <a class="btn btn-danger"href="/user/deleteLoginData/<%=user._id.$oid%>">Remove Record</a>
+                    <a  class="btn btn-primary btn-link" href="/user/getLoginData/<%=user._id.$oid%>">View Password</a>
+                    <a  class="btn btn-danger btn-link" href="/user/deleteLoginData/<%=user._id.$oid%>">Remove Record</a>
             </form>
-            <!-- <div>
-                <a class="btn btn-primary" href="/user/getLoginData/<%=user._id.$oid%>">View Password</a>
-            </div>
-            <div >
-                <a class="btn btn-danger"href="/user/deleteLoginData/<%=user._id.$oid%>">Remove Record</a>
-            </div> -->
         </div>
     <% }) %>
-    <%// } %>
 </div>
-
-
-<!-- 
-<div>
-    <a href="/user/newLoginDataView">Dodaj nowy rekord</a>
-</div> -->
