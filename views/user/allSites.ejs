@@ -11,14 +11,16 @@
                 <li>Login:              <%= user.login %> </li>
                 <li>passwordStrength:   <%= user.passwordStrength %> </li>
                 <li>Note:               <%= user.note %> </li>
-                <button type="sumbit">Update Password</button>
+                <button class="btn btn-primary" type="sumbit">Update Password</button>
+                <a class="btn btn-primary" href="/user/getLoginData/<%=user._id.$oid%>">View Password</a>
+                <a class="btn btn-danger"href="/user/deleteLoginData/<%=user._id.$oid%>">Remove Record</a>
             </form>
-            <div>
-                <a href="/user/getLoginData/<%=user._id.$oid%>">View Password</a>
+            <!-- <div>
+                <a class="btn btn-primary" href="/user/getLoginData/<%=user._id.$oid%>">View Password</a>
             </div>
-            <div>
-                <a href="/user/deleteLoginData/<%=user._id.$oid%>">Remove Record</a>
-            </div>
+            <div >
+                <a class="btn btn-danger"href="/user/deleteLoginData/<%=user._id.$oid%>">Remove Record</a>
+            </div> -->
         </div>
     <% }) %>
     <%// } %>

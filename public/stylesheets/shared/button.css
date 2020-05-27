@@ -16,7 +16,6 @@
     border-radius: .2rem;
     padding: .5rem 1rem;
     font-size: 0.8rem;
-    font-family: 'Gotham Rounded';
     cursor: pointer;
     text-decoration: none;
     text-align: center;
@@ -35,10 +34,10 @@
     color: var(--color-btn-primary-text);
     background-color: var(--color-btn-primary-background-dark);
 }
-.btn-primary-disabled{
+/* .btn-primary-disabled{
     color: var(--color-btn-primary-text);
     background-color: var(--color-btn-primary-disabled-background-dark);
-}
+} */
 .btn-primary:hover{
     color: var(--color-btn-primary-text-dark);
     background-color: var(--color-btn-primary-background);

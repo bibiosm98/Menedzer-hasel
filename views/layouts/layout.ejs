@@ -4,17 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script defer src="/javascript/javascripts.js"></script>
+    <!-- <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+    <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script defer src="/javascript/autoLoginData.js"></script>
+    <script defer src="/javascript/password.js"></script>  
+    <script defer src="https://code.jquery.com/jquery-3.5.0.js"></script>
     <link id="main-css" rel="stylesheet" href="/stylesheets/main.css">
     <title>Menedżer haseł</title>
 </head>
 <body>
-    <div id="header" class="header">
-        <%-include('../header.ejs')%>
-    </div>
-    <div id="body" class="body">
-        <%- body %>
+    <div class="container">
+        <div id="header" class="header">
+            <%-include('../header.ejs')%>
+        </div>
+        <div id="body" class="inner-container body">
+            <%- body %>
+        </div>
     </div>
 </body>
 </html>

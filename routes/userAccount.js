@@ -14,10 +14,10 @@ router.get('/', (req, res) => {
                     if(!error && response.statusCode == 200) {
                         const data = JSON.parse(body)
 
-                        console.log(body)
-                        console.log(data)
+                        // console.log(body)
+                        // console.log(data)
 
-                        console.log(data._id)
+                        // console.log(data._id)
                         // const id = JSON.parse(data._id)
                         console.log()
                         res.render('./userAccount/account', {data: {

@@ -1,20 +1,42 @@
 @import 'shared/variables.css';
-/* @import 'shared/button.css'; */
+@import 'shared/header.css';
+@import 'shared/button.css';
 /* @import 'shared/form.css'; */
 
 :root{
     /* font-family: 'Gotham rounded'; */
-    font-size: 20px;
-    color: var(--color-text-light)
+    font-size: 1.7rem;
+    /* color: var(--color-text-light) */
+}
+
+*, *::before, *::after{
+    box-sizing: border-box;
 }
 
 body{
     background: linear-gradient(to right, 
     var(--color-background-dark), 
     var(--color-background-light));
+    color: var(--color-text-light)
 }
 
-.header-nav{
+.container{
+    max-width: 1200px;
+    margin: auto;
+    margin-bottom: 3rem;
+}
+
+.inner-container{
+    margin: 0 3rem;
+}
+
+.page-header{
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+
+/* .header-nav{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -42,7 +64,7 @@ body{
     align-content: center;
     align-items: center;
     flex-wrap: wrap;
-}
+} 
 .flexbox-item{
     width: 25%;
     height: var(width 30%);
@@ -52,8 +74,6 @@ body{
     border: 3px solid #000000;
     overflow: hidden;
     display: grid;
-    /* flex-basis: 1;
-    flex-grow: 1; */
 }
 .flexbox-item li{
     margin: 20px;
@@ -126,8 +146,8 @@ a{
     border: 2px solid #000000;
 }
 .form-row{
-    /* display: flexbox;
-    margin-bottom: .5rem; */
+    display: flexbox;
+    margin-bottom: .5rem; 
 }
 .form-item{
     position: relative;
@@ -144,4 +164,4 @@ h1{
 
 .logowanie-select{
     margin-left: 43%;
-}
+} */

@@ -32,7 +32,7 @@ router.post('/', async (req, res) => {
                 if(data.response === 'OK'){
                     // console.log("IF")
                     data.response = null
-                    res.render('./index', {data: data})
+                    res.redirect('./')//, {data: data})
                 }else{
                     // console.log("ELSE")
                     res.render('signup', {data: data})
