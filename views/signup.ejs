@@ -7,24 +7,24 @@
         <div class="form-row">
             <div class="form-item">
                 <label>Email:</label>
-                <input type="email" name="email" value="<%= data.email %>">
+                <input type="email" name="email" value="<%= data.email %>" required>
             </div>
             <div class="form-item">
                 <label>Login:</label>
-                <input type="text" name="login" value="<%= data.login %>">
+                <input type="text" name="login" value="<%= data.login %>" required>
             </div>
             <div class="form-item">
                 <label>Password:</label>
-                <input id="password" type="text" name="password" value="">
+                <input id="password" type="text" name="password" value="" required>
                 <div>Password Strength: </div> <div id="strength"></div>
             </div>
             <div class="form-item">
                 <label>Password repeat:</label>
-                <input id="password-repeat" type="text" name="password-repeat" value="">
+                <input id="password-repeat" type="text" name="password-repeat" value="" required>
             </div>
             <div id="password-error"></div>
         </div>
-        <button class="btn btn-primary btn-to-right" type="submit">Create new account</button>
+        <button id="btn-submit" class="btn btn-primary btn-to-right" type="submit">Create new account</button>
     </form>
 <div>
 

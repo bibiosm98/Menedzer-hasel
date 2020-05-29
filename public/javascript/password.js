@@ -1,6 +1,5 @@
 $("#password").on('change', () => {
     const password = $("#password").val()
-    // alert(password)
     const data = {
         "password": password
     }
@@ -11,9 +10,7 @@ $("#password").on('change', () => {
         dataType    : "json",
         contentType : "application/json",
         data        : JSON.stringify(data)
-    }).done((response, res) => {
-        console.log(response)
-        console.log(res)
+    }).done((res) => {
         $("#strength").html(res.passwordStrength)
     })
 })
@@ -26,8 +23,10 @@ $("#password-repeat").on('change', () => {
 })
 function check(){
     $('#password-error').text("");
+    $('#btn-submit').prop('disabled', false);
     if($('#password').val() !== $('#password-repeat').val()){   
-        $('#password-error').text("Passwords not equals");
+        $('#password-error').html("Passwords not equals");
+        $('#btn-submit').prop('disabled', true);
     }
 }
 
