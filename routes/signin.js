@@ -72,7 +72,8 @@ router.post('/',
 // GET AllSites route for user
 router.get('/', (req, res) => {
     console.log("SIGNIN GET")
-    getUserAllSites(token).then((data) => {
+    console.log(req.session)
+    getUserAllSites(req.session.passport.user).then((data) => {
         res.render('./user/allSites', {data: data})
     })
 })
