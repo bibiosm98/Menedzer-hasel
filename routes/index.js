@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const request = require('request')
 
+const { ensureAuthenticated, forwardAuthenticated } = require('../config/authenticated');
+
 router.get('/', (req, res) => {
     if(token !== ''){
         res.redirect('signin')

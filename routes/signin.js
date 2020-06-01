@@ -2,28 +2,76 @@ const express = require('express')
 const router = express.Router()
 const request = require('request')
 const RSA = require('node-rsa')
+const passport = require('passport')
+const { ensureAuthenticated, forwardAuthenticated } = require('../config/authenticated');
+const inicializePassport = require('../config/passport')
+// inicializePassport(
+//     passport, 
+//     token => {
+//         console.log("TOKEN")
+//         return "TOKENIK"
+//     }
+// )
+router.post('/', 
+    passport.authenticate('local', //'local-token', 
+    {
+        successRedirect: '/signin',
+        failureRedirect: '/signup',
+        failureFlash: true
+    })//,
+// (req, res) => {
+//     console.log("passport.authenticate req res")
+//     let message = JSON.stringify({"login": req.body.login, "password": req.body.password})
+//     getPublicKeyFromServer(message)
+//     .then((messageEncrypted) => {
+//         postDataAndGetToken(messageEncrypted)
+//         .then((token1) => {
+//             console.log('passport authenticate')  
+//             token = token1
+//             getUserAllSites(token1).then((data) => {
+//                 res.render('./user/allSites', {data: data})
+//             }).catch((e) => {
+//                 res.redirect('/')
+//             })
+//         }).catch((e) => {
+//             res.redirect('/')
+//         })
+//     }).catch((e) => {
 
-router.post('/', (req, res) => {
-    let message = JSON.stringify({"login": req.body.login, "password": req.body.password})
-    getPublicKeyFromServer(message)
-    .then((messageEncrypted) => {
-        postDataAndGetToken(messageEncrypted)
-        .then((token1) => {
-            token = token1
-            getUserAllSites(token1).then((data) => {
-                res.render('./user/allSites', {data: data})
-            }).catch((e) => {
-                res.redirect('/')
-            })
-        }).catch((e) => {
-            res.redirect('/')
-        })
-    }).catch((e) => {
+//     })
+// }
+)
 
-    })
-})
 
+
+// router.post('/',
+//     (req, res) => {
+//         console.log("passport.authenticate req res")
+//         let message = JSON.stringify({"login": req.body.login, "password": req.body.password})
+//         getPublicKeyFromServer(message)
+//         .then((messageEncrypted) => {
+//             postDataAndGetToken(messageEncrypted)
+//             .then((token1) => {
+//                 console.log('passport authenticate')  
+//                 token = token1
+//                 getUserAllSites(token1).then((data) => {
+//                     res.render('./user/allSites', {data: data})
+//                 }).catch((e) => {
+//                     res.redirect('/')
+//                 })
+//             }).catch((e) => {
+//                 res.redirect('/')
+//             })
+//         }).catch((e) => {
+
+//         })
+//     }
+// )
+
+
+// GET AllSites route for user
 router.get('/', (req, res) => {
+    console.log("SIGNIN GET")
     getUserAllSites(token).then((data) => {
         res.render('./user/allSites', {data: data})
     })
@@ -64,14 +112,23 @@ function postDataAndGetToken(messageEncrypted){
                 headers: {'Content-Type': 'text/plain'},
                 body: messageEncrypted
             }, (error, response, body) => {
-                if(JSON.parse(body).response == "NOT LOGGED IN"){
-                    console.log('not logged in')
-                    reject('NOT LOGGED IN')
-                }else{
-                    console.log(body)
-                    console.log(JSON.parse(body).response)
-                    let token2 = JSON.parse(body).response
-                    resolve(token2)
+                let a 
+                try{
+                    a = JSON.parse(body)
+                    if(a.response == "NOT LOGGED IN"){
+                        console.log('not logged in')
+                        // reject('NOT LOGGED IN')
+                        resolve('NOT LOGGED IN')
+                    }else{
+                        console.log(body)
+                        console.log('ELSE')
+                        let token2 = JSON.parse(body).response
+                        resolve(token2)
+                    }
+                }catch(e){
+                    console.log('LOGIN NOT FIND')
+                    // reject('LOGIN NOT FIND')
+                    resolvet('LOGIN NOT FIND')
                 }
             })
         }catch(e){
@@ -92,8 +149,8 @@ function getUserAllSites(token){
             },
             (error, response, body) => {
                 if (!error && response.statusCode == 200) {
-                    console.log("ASd")
-                    console.log(body)
+                    console.log("User AllSites body")
+                    // console.log(body)
                     try{
                         JSON.parse(body).forEach(element => {
                             data.push(element)
