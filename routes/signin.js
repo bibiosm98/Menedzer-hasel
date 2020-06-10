@@ -149,9 +149,10 @@ function getUserAllSites(token){
                 body: ""
             },
             (error, response, body) => {
+                if(body.response != "SESSION EXPIRED"){
                 if (!error && response.statusCode == 200) {
                     console.log("User AllSites body")
-                    // console.log(body)
+                    console.log(body)
                     try{
                         JSON.parse(body).forEach(element => {
                             data.push(element)
@@ -160,7 +161,7 @@ function getUserAllSites(token){
                         reject(e)
                     }
                     resolve(data)
-                }
+                }}
             })
         }catch(e){
             reject(e)

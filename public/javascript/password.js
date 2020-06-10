@@ -11,8 +11,10 @@ $("#password").on('change', () => {
         contentType : "application/json",
         data        : JSON.stringify(data)
     }).done((res) => {
+        console.log(res);
         $("#strength").html(res.passwordStrength)
     })
+    console.log("as");
 })
 
 $("#password").on('change', () => {
@@ -22,6 +24,7 @@ $("#password-repeat").on('change', () => {
     check()
 })
 function check(){
+    console.log("check()");
     $('#password-error').text("");
     $('#btn-submit').prop('disabled', false);
     if($('#password').val() !== $('#password-repeat').val()){   

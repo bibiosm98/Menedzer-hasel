@@ -23,7 +23,8 @@ app.use(
     session({
       secret: 'secret',
       resave: true,
-      saveUninitialized: true
+      saveUninitialized: true,
+      secure: true
     })
 );
 app.use(flash())
