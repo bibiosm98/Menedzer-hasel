@@ -18,7 +18,6 @@ router.get('/', (req, res) => {
                     users.push({login:element.login, password:element.password})
                 });
             }
-            // console.log(users)
             res.locals.users = users
             res.render('index', {data: {
                 login: users[0].login,

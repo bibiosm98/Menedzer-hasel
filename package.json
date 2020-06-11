@@ -17,6 +17,7 @@
     "express": "^4.17.1",
     "express-ejs-layouts": "^2.5.0",
     "express-session": "^1.17.1",
+    "node-crypto-gcm": "^1.0.5",
     "node-forge": "^0.9.1",
     "node-rsa": "^1.0.8",
     "passport": "^0.4.1",

@@ -18,7 +18,7 @@ const forge = require('node-forge');
 // let key = forge.random.getBytesSync(16)
 // let iv = forge.random.getBytesSync(16)
 
-const keyRSA = new RSA({b:1024 })
+const keyRSA = new RSA({b:384})
 
 let encrypt, decrypt;
 
@@ -44,7 +44,7 @@ module.exports = function(passport, token2){
                         // }).catch((e) => {
                         //     res.redirect('/')
                         // })        
-                        console.log(token1.length)
+                        //console.log(token1.length)
                         if(token1.length >= 30){
                             return done(null, token1) 
                         }else{
@@ -54,7 +54,7 @@ module.exports = function(passport, token2){
                             // })
                         }
                     }).catch((e) => {
-                        res.redirect('/')
+                        res.redirect('/')  // tutaj rzuca błąd, res niew widać
                     })
                 }).catch((e) => {
 
@@ -81,22 +81,9 @@ function getPublicKeyFromServer(message){
                 console.log("SIGNV_IN_ GET" )
                 if (!error && response.statusCode == 200) {
                     serverPublicKey = body
-                    // console.log(body);
-                    //console.log("MESSAGE = " + message)
-                    //console.log("SERVER PUBLIC KEY = " + serverPublicKey)
                     let key = new RSA(serverPublicKey)
                     key.setOptions('pkcs1_oaep')
-
-                    // message to     let message = JSON.stringify({"login": login, "password": password})
-                    // to jest body w dalszej części
                     let mess = key.encrypt(message, 'base64');
-                    console.log("Message to server = ")
-                    console.log(message)
-                    console.log("Message encrypted by RSA server public key = ")
-                    console.log(mess)
-                    //console.log("MESSAGE BASE 64 = " + mess)
-                    //mess = new Buffer.alloc(mess.length, (mess).toString('ascii'))
-                    //console.log("MESSAGE to ASCII = " + mess)
                     resolve(mess)
                 }
             })
@@ -111,82 +98,12 @@ function postDataAndGetToken(messageEncrypted){
     let logInLink = 'https://fast-ridge-60024.herokuapp.com/api/SignIn'
     return new Promise(async (resolve, reject) => {
         try{
-            
-
-
-            let key = forge.random.getBytesSync(16);
-            let iv = forge.random.getBytesSync(16);
-             
-
-            let textToEncrypt = "HEllo COW lets use AES power"
-
-            console.log('AES TRYING')
-            console.log("IV  " + iv.length)
-            console.log(iv)
-            console.log(iv.toString())
-            console.log('ENCRYPTED = ')
-            let cipher = forge.cipher.createCipher('AES-GCM', key);
-            cipher.start({
-              iv: iv, // should be a 12-byte binary-encoded string or byte buffer
-              additionalData: 'binary-encoded string', // optional
-              tagLength: 128 // optional, defaults to 128 bits
-            });
-            cipher.update(forge.util.createBuffer(new Buffer(textToEncrypt)));
-            cipher.finish();
-            let encrypted = cipher.output;
-            let tag = cipher.mode.tag;
-            // outputs encrypted hex
-            console.log(encrypted.toHex());
-            // outputs authentication tag
-            console.log(tag.toHex());
-             
-            // decrypt some bytes using GCM mode
-            console.log('DECRYPTED = ')
-            let decipher = forge.cipher.createDecipher('AES-GCM', key);
-            decipher.start({
-              iv: iv,
-              additionalData: 'binary-encoded string', // optional
-              tagLength: 128, // optional, defaults to 128 bits
-              tag: tag // authentication tag from encryption
-            });
-            decipher.update(encrypted);
-            let pass = decipher.finish();
-            // pass is false if there was a failure (eg: authentication tag didn't match)
-            if(pass) {
-              // outputs decrypted hex
-              console.log(decipher.output.toString());
-            }
-
-
-
-
-
-
-
-
-
             console.log("SIGNV_IN_ post try")
             console.log("KEY PAIR")
             keyRSA.setOptions('pkcs1_oaep')
             keyRSA.generateKeyPair()
-            let keyRSApublic = keyRSA.exportKey('pkcs1-public-pem')
-            let keyRSAprivate = keyRSA.exportKey('pkcs1-pem')
-            console.log(keyRSApublic)
-            console.log(keyRSAprivate)
-            
-            let text = "Hello Cow!@??"
-            console.log(text)
-            encrypt = keyRSA.encrypt(text , 'base64')
-            console.log(encrypt)
-            decrypt = keyRSA.decrypt(encrypt, 'utf8')
-            console.log("DECRYPT = ")
-            console.log(decrypt)
-            // console.log(keyPair)
-            // });
-            // console.log("KEY PUBLIC")
-            // console.log(forge.pki.publicKeyToPem(keyPair.publicKey))
-            // console.log("GET PEM = ")
-            // console.log(PEM)
+            const keyRSApublic = keyRSA.exportKey('pkcs1-public-pem')
+            const keyRSAprivate = keyRSA.exportKey('pkcs1-pem')
             request.post({
                 uri: logInLink,
                 headers: {'Content-Type': 'application/json'},
@@ -198,83 +115,31 @@ function postDataAndGetToken(messageEncrypted){
             }, async(error, response, body) => {
                 let a
                 try{
-                    console.log("BODY = ")
-                    console.log(body)
-                    console.log()
+                    let encryptedKey = Buffer.from(body.encryptedKey).toString();
+                    let serverAesKey = new RSA(keyRSAprivate).decrypt(encryptedKey, 'base64')
 
-                    console.log("NONCE = ")
-                    console.log(body.nonce)
-                    let nonce = Buffer.from(body.nonce, 'utf-8').toString('base64')
-                    console.log(nonce)
-
-                    console.log()
-                    console.log("CipherText = ")
-                    console.log(body.cipherText)
-                    let cipherText = Buffer.from(body.cipherText, 'utf-8').toString('base64')
-                    console.log(cipherText)
-
-                    console.log()
-                    console.log("TAG = ")
-                    console.log(body.tag)
-                    let tag = Buffer.from(body.tag, 'utf-8').toString('base64')
-                    console.log(tag)
-
-                    console.log()
-                    console.log("EncryptedKey = ")
-                    console.log(body.encryptedKey)
-                    let encryptedKey = Buffer.from(body.encryptedKey).toString('base64')
-                    let encryptedKey2 = Buffer.from(body.encryptedKey, 'utf-8').toString('base64')
-                    console.log(encryptedKey)
-                    console.log(encryptedKey2)
-
-
-                    console.log()
-                    console.log('SERVER AES KEY = ')
-                    let serverAesKey = new RSA(keyRSAprivate).decrypt(body.encryptedKey, 'base64')
-                    let serverAesKey2 = keyRSA.decrypt(body.encryptedKey, 'utf8')
-                    console.log(serverAesKey)
-                    console.log("SECOND key rsa = ")
-                    console.log(serverAesKey2)
-                    console.log("serverAesKey  to utf8 = ")
-                    //console.log(Buffer.from(serverAesKey, 'utf8').toString('base64'))
-
-                    let aesKEY = Buffer.from(serverAesKey, 'utf-8').toString('base64')
-                    console.log(aesKEY);
-                    
-                    var decipher = forge.cipher.createDecipher('AES-GCM', serverAesKey);
-                    console.log("decipher = ")
+                    key = Buffer.from(serverAesKey, 'base64');
+                    iv = Buffer.from(body.nonce, 'base64');
+                    tag = Buffer.from(body.tag, 'base64');
+                    encrypted = Buffer.from(body.cipherText, 'base64');
+                    var decipher = forge.cipher.createDecipher('AES-GCM', forge.util.createBuffer(key));
                     decipher.start({
-                        iv: body.nonce,
-                        additionalData: 'binary-encoded string', // optional
-                        tagLength: 128, // optional, defaults to 128 bits
-                        tag: tag // authentication tag from encryption
+                      iv: iv,
+                      tagLength: 128,
+                      tag: forge.util.createBuffer(tag)
                     });
-                    console.log("decipher start = ")
-                    decipher.update(body.cipherText);
-                    console.log("decipher update = ")
-                    let pass = decipher.finish();
-                    // pass is false if there was a failure (eg: authentication tag didn't match)
+                    temp = decipher.update(forge.util.createBuffer(encrypted));
+                    console.log(temp);
+                    pass = decipher.finish();
+                    console.log(pass);
                     if(pass) {
-                    // outputs decrypted hex 
-                        console.log("PASS");
-                        console.log(decipher.output.toHex());
-                    }else{
-                        console.log("Error GCM")
+                        let response = decipher.output.toString('utf-8')
+                      console.log(response);
+                      console.log(JSON.parse(response).response)
+                      resolve(JSON.parse(response).response);
                     }
-
-                    //console.log(a);
-                    //if(a.nonce != "NOT LOGGED IN"){
-                        console.log('not logged in')
-                        // reject('NOT LOGGED IN')
-                        resolve('NOT LOGGED IN')
-                   // }else{
-                        // console.log(body)
-                        console.log('ELSE')
-                        //let token2 = JSON.parse(body).response
-                        //resolve(token2)
-                    //}
                 }catch(e){
-                    console.log('LOGIN NOT FIND2')
+                    console.log('Catch ERROR')
                     // reject('LOGIN NOT FIND')
                     resolve('LOGIN NOT FIND')
                 }
