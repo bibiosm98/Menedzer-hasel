@@ -5,69 +5,15 @@ const RSA = require('node-rsa')
 const passport = require('passport')
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/authenticated');
 const inicializePassport = require('../config/passport')
-// inicializePassport(
-//     passport, 
-//     token => {
-//         console.log("TOKEN")
-//         return "TOKENIK"
-//     }
-// )
+const { session } = require('passport')
 router.post('/', 
     passport.authenticate('local', //'local-token', 
     {
         successRedirect: '/signin',
         failureRedirect: '/signup',
         failureFlash: true
-    })//,
-// (req, res) => {
-//     console.log("passport.authenticate req res")
-//     let message = JSON.stringify({"login": req.body.login, "password": req.body.password})
-//     getPublicKeyFromServer(message)
-//     .then((messageEncrypted) => {
-//         postDataAndGetToken(messageEncrypted)
-//         .then((token1) => {
-//             console.log('passport authenticate')  
-//             token = token1
-//             getUserAllSites(token1).then((data) => {
-//                 res.render('./user/allSites', {data: data})
-//             }).catch((e) => {
-//                 res.redirect('/')
-//             })
-//         }).catch((e) => {
-//             res.redirect('/')
-//         })
-//     }).catch((e) => {
-
-//     })
-// }
+    })
 )
-
-
-
-// router.post('/',
-//     (req, res) => {
-//         console.log("passport.authenticate req res")
-//         let message = JSON.stringify({"login": req.body.login, "password": req.body.password})
-//         getPublicKeyFromServer(message)
-//         .then((messageEncrypted) => {
-//             postDataAndGetToken(messageEncrypted)
-//             .then((token1) => {
-//                 console.log('passport authenticate')  
-//                 token = token1
-//                 getUserAllSites(token1).then((data) => {
-//                     res.render('./user/allSites', {data: data})
-//                 }).catch((e) => {
-//                     res.redirect('/')
-//                 })
-//             }).catch((e) => {
-//                 res.redirect('/')
-//             })
-//         }).catch((e) => {
-
-//         })
-//     }
-// )
-
 
 // GET AllSites route for user
 router.get('/', (req, res) => {
@@ -149,19 +95,36 @@ function getUserAllSites(token){
                 body: ""
             },
             (error, response, body) => {
-                if(body.response != "SESSION EXPIRED"){
                 if (!error && response.statusCode == 200) {
                     console.log("User AllSites body")
+                    // console.log(body)
+                    console.log("KEEY =  and session")
+                    console.log(session)
                     console.log(body)
+                    // console.log(session.key)
+                    // const {decryptAES} = require('../config/decryptAES')
+                    // const response = decryptAES(serverAesKey, body)
+                    // resolve(JSON.parse(response).response)
+                    console.log(JSON.parse(body).encryptedKey)
+                    let encryptedKey = Buffer.from(JSON.parse(body).encryptedKey).toString();
+                    console.log("KEEY1 = ")
+                    let serverAesKey = new RSA(session.key).decrypt(encryptedKey, 'base64')
+                    console.log("KEEY 2= " + serverAesKey)
+                    const {decryptAES} = require('../config/decryptAES')
+                    console.log("KEEY3 = ")
+                    const AESresponse = decryptAES(serverAesKey, JSON.parse(body))
+                    console.log("KEEY4 = ")
+                    console.log(AESresponse)
+
                     try{
-                        JSON.parse(body).forEach(element => {
+                        JSON.parse(AESresponse).forEach(element => {
                             data.push(element)
                         });
                     }catch(e){
                         reject(e)
                     }
                     resolve(data)
-                }}
+                }
             })
         }catch(e){
             reject(e)

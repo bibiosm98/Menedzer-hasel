@@ -11,18 +11,13 @@ const PEM = getPem(modulus, exponent);
 
 
 const forge = require('node-forge');
-// let privateKey, publicKey
-// let rsa = forge.pki.rsa
-// let keyPair = rsa.generateKeyPair({bits: 2048, e: 0x10001});
-
-// let key = forge.random.getBytesSync(16)
-// let iv = forge.random.getBytesSync(16)
-
+const { session } = require('passport')
 const keyRSA = new RSA({b:384})
-
-let encrypt, decrypt;
-
-const crypto = require('crypto');
+keyRSA.setOptions('pkcs1_oaep')
+keyRSA.generateKeyPair()
+const keyRSApublic = keyRSA.exportKey('pkcs1-public-pem')
+const keyRSAprivate = keyRSA.exportKey('pkcs1-pem')
+session.key = keyRSAprivate
 const LocalStrategy = require('passport-local').Strategy
 
 module.exports = function(passport, token2){
@@ -99,11 +94,6 @@ function postDataAndGetToken(messageEncrypted){
     return new Promise(async (resolve, reject) => {
         try{
             console.log("SIGNV_IN_ post try")
-            console.log("KEY PAIR")
-            keyRSA.setOptions('pkcs1_oaep')
-            keyRSA.generateKeyPair()
-            const keyRSApublic = keyRSA.exportKey('pkcs1-public-pem')
-            const keyRSAprivate = keyRSA.exportKey('pkcs1-pem')
             request.post({
                 uri: logInLink,
                 headers: {'Content-Type': 'application/json'},
@@ -112,35 +102,16 @@ function postDataAndGetToken(messageEncrypted){
                     'public_key_PEM':keyRSApublic
                 },
                 json: true,
-            }, async(error, response, body) => {
-                let a
+            }, (error, response, body) => {
                 try{
                     let encryptedKey = Buffer.from(body.encryptedKey).toString();
                     let serverAesKey = new RSA(keyRSAprivate).decrypt(encryptedKey, 'base64')
 
-                    key = Buffer.from(serverAesKey, 'base64');
-                    iv = Buffer.from(body.nonce, 'base64');
-                    tag = Buffer.from(body.tag, 'base64');
-                    encrypted = Buffer.from(body.cipherText, 'base64');
-                    var decipher = forge.cipher.createDecipher('AES-GCM', forge.util.createBuffer(key));
-                    decipher.start({
-                      iv: iv,
-                      tagLength: 128,
-                      tag: forge.util.createBuffer(tag)
-                    });
-                    temp = decipher.update(forge.util.createBuffer(encrypted));
-                    console.log(temp);
-                    pass = decipher.finish();
-                    console.log(pass);
-                    if(pass) {
-                        let response = decipher.output.toString('utf-8')
-                      console.log(response);
-                      console.log(JSON.parse(response).response)
-                      resolve(JSON.parse(response).response);
-                    }
+                    const {decryptAES} = require('../config/decryptAES')
+                    const response = decryptAES(serverAesKey, body)
+                    resolve(JSON.parse(response).response)
                 }catch(e){
                     console.log('Catch ERROR')
-                    // reject('LOGIN NOT FIND')
                     resolve('LOGIN NOT FIND')
                 }
             })
