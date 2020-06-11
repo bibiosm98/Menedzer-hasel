@@ -97,25 +97,10 @@ function getUserAllSites(token){
             (error, response, body) => {
                 if (!error && response.statusCode == 200) {
                     console.log("User AllSites body")
-                    // console.log(body)
-                    console.log("KEEY =  and session")
-                    console.log(session)
-                    console.log(body)
-                    // console.log(session.key)
-                    // const {decryptAES} = require('../config/decryptAES')
-                    // const response = decryptAES(serverAesKey, body)
-                    // resolve(JSON.parse(response).response)
-                    console.log(JSON.parse(body).encryptedKey)
                     let encryptedKey = Buffer.from(JSON.parse(body).encryptedKey).toString();
-                    console.log("KEEY1 = ")
                     let serverAesKey = new RSA(session.key).decrypt(encryptedKey, 'base64')
-                    console.log("KEEY 2= " + serverAesKey)
                     const {decryptAES} = require('../config/decryptAES')
-                    console.log("KEEY3 = ")
                     const AESresponse = decryptAES(serverAesKey, JSON.parse(body))
-                    console.log("KEEY4 = ")
-                    console.log(AESresponse)
-
                     try{
                         JSON.parse(AESresponse).forEach(element => {
                             data.push(element)
