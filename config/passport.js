@@ -18,9 +18,11 @@ const forge = require('node-forge');
 // let key = forge.random.getBytesSync(16)
 // let iv = forge.random.getBytesSync(16)
 
-const keyRSA = new RSA({b:512})
+const keyRSA = new RSA({b:1024 })
 
+let encrypt, decrypt;
 
+const crypto = require('crypto');
 const LocalStrategy = require('passport-local').Strategy
 
 module.exports = function(passport, token2){
@@ -110,15 +112,75 @@ function postDataAndGetToken(messageEncrypted){
     return new Promise(async (resolve, reject) => {
         try{
             
+
+
+            let key = forge.random.getBytesSync(16);
+            let iv = forge.random.getBytesSync(16);
+             
+
+            let textToEncrypt = "HEllo COW lets use AES power"
+
+            console.log('AES TRYING')
+            console.log("IV  " + iv.length)
+            console.log(iv)
+            console.log(iv.toString())
+            console.log('ENCRYPTED = ')
+            let cipher = forge.cipher.createCipher('AES-GCM', key);
+            cipher.start({
+              iv: iv, // should be a 12-byte binary-encoded string or byte buffer
+              additionalData: 'binary-encoded string', // optional
+              tagLength: 128 // optional, defaults to 128 bits
+            });
+            cipher.update(forge.util.createBuffer(new Buffer(textToEncrypt)));
+            cipher.finish();
+            let encrypted = cipher.output;
+            let tag = cipher.mode.tag;
+            // outputs encrypted hex
+            console.log(encrypted.toHex());
+            // outputs authentication tag
+            console.log(tag.toHex());
+             
+            // decrypt some bytes using GCM mode
+            console.log('DECRYPTED = ')
+            let decipher = forge.cipher.createDecipher('AES-GCM', key);
+            decipher.start({
+              iv: iv,
+              additionalData: 'binary-encoded string', // optional
+              tagLength: 128, // optional, defaults to 128 bits
+              tag: tag // authentication tag from encryption
+            });
+            decipher.update(encrypted);
+            let pass = decipher.finish();
+            // pass is false if there was a failure (eg: authentication tag didn't match)
+            if(pass) {
+              // outputs decrypted hex
+              console.log(decipher.output.toString());
+            }
+
+
+
+
+
+
+
+
+
             console.log("SIGNV_IN_ post try")
             console.log("KEY PAIR")
             keyRSA.setOptions('pkcs1_oaep')
             keyRSA.generateKeyPair()
             let keyRSApublic = keyRSA.exportKey('pkcs1-public-pem')
             let keyRSAprivate = keyRSA.exportKey('pkcs1-pem')
-            // console.log(keyRSApublic)
-            // console.log(keyRSAprivate)
+            console.log(keyRSApublic)
+            console.log(keyRSAprivate)
             
+            let text = "Hello Cow!@??"
+            console.log(text)
+            encrypt = keyRSA.encrypt(text , 'base64')
+            console.log(encrypt)
+            decrypt = keyRSA.decrypt(encrypt, 'utf8')
+            console.log("DECRYPT = ")
+            console.log(decrypt)
             // console.log(keyPair)
             // });
             // console.log("KEY PUBLIC")
@@ -133,7 +195,7 @@ function postDataAndGetToken(messageEncrypted){
                     'public_key_PEM':keyRSApublic
                 },
                 json: true,
-            }, (error, response, body) => {
+            }, async(error, response, body) => {
                 let a
                 try{
                     console.log("BODY = ")
@@ -142,7 +204,8 @@ function postDataAndGetToken(messageEncrypted){
 
                     console.log("NONCE = ")
                     console.log(body.nonce)
-                    console.log(Buffer.from(body.nonce, 'utf-8').toString('base64'))
+                    let nonce = Buffer.from(body.nonce, 'utf-8').toString('base64')
+                    console.log(nonce)
 
                     console.log()
                     console.log("CipherText = ")
@@ -159,42 +222,53 @@ function postDataAndGetToken(messageEncrypted){
                     console.log()
                     console.log("EncryptedKey = ")
                     console.log(body.encryptedKey)
-                    let encryptedKey = Buffer.from(body.encryptedKey, 'utf-8').toString('base64')
+                    let encryptedKey = Buffer.from(body.encryptedKey).toString('base64')
+                    let encryptedKey2 = Buffer.from(body.encryptedKey, 'utf-8').toString('base64')
                     console.log(encryptedKey)
+                    console.log(encryptedKey2)
 
 
                     console.log()
                     console.log('SERVER AES KEY = ')
-                    let serverAesKey = keyRSA.decrypt(encryptedKey, 'base64')
+                    let serverAesKey = new RSA(keyRSAprivate).decrypt(body.encryptedKey, 'base64')
+                    let serverAesKey2 = keyRSA.decrypt(body.encryptedKey, 'utf8')
                     console.log(serverAesKey)
+                    console.log("SECOND key rsa = ")
+                    console.log(serverAesKey2)
+                    console.log("serverAesKey  to utf8 = ")
+                    //console.log(Buffer.from(serverAesKey, 'utf8').toString('base64'))
 
-                    let aesKEY = Buffer.from(serverKey).toString('base64')
+                    let aesKEY = Buffer.from(serverAesKey, 'utf-8').toString('base64')
                     console.log(aesKEY);
+                    
+                    var decipher = forge.cipher.createDecipher('AES-GCM', serverAesKey);
+                    console.log("decipher = ")
+                    decipher.start({
+                        iv: body.nonce,
+                        additionalData: 'binary-encoded string', // optional
+                        tagLength: 128, // optional, defaults to 128 bits
+                        tag: tag // authentication tag from encryption
+                    });
+                    console.log("decipher start = ")
+                    decipher.update(body.cipherText);
+                    console.log("decipher update = ")
+                    let pass = decipher.finish();
+                    // pass is false if there was a failure (eg: authentication tag didn't match)
+                    if(pass) {
+                    // outputs decrypted hex 
+                        console.log("PASS");
+                        console.log(decipher.output.toHex());
+                    }else{
+                        console.log("Error GCM")
+                    }
 
-
-                    // console.log("ENCRYPTED text from cipherText = ")
-                    // var decipher = forge.cipher.createDecipher('AES-GCM', aesKEY);
-                    // decipher.start({
-                    //     iv: Buffer.from(body.nonce).toString('base64'),
-                    //     //additionalData: 'binary-encoded string', // optional
-                    //     tagLength: 96, // optional, defaults to 128 bits
-                    //     tag: Buffer.from(body.tag).toString('base64') // authentication tag from encryption
-                    // });
-                    // decipher.update(Buffer.from(body.cipherText).toString('base64'));
-                    // var pass = decipher.finish();
-                    // // pass is false if there was a failure (eg: authentication tag didn't match)
-                    // if(pass) {
-                    // // outputs decrypted hex
-                    //     console.log(decipher.output.toHex());
-                    // }
-
-                    console.log(a);
+                    //console.log(a);
                     //if(a.nonce != "NOT LOGGED IN"){
                         console.log('not logged in')
                         // reject('NOT LOGGED IN')
                         resolve('NOT LOGGED IN')
                    // }else{
-                        console.log(body)
+                        // console.log(body)
                         console.log('ELSE')
                         //let token2 = JSON.parse(body).response
                         //resolve(token2)
