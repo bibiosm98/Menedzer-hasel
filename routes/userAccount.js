@@ -12,21 +12,18 @@ router.get('/', (req, res) => {
                 },
                 (error, response, body) => {
                     if(!error && response.statusCode == 200) {
-                        const data = JSON.parse(body)
-
-                        // console.log(body)
-                        // console.log(data)
-
-                        // console.log(data._id)
-                        // const id = JSON.parse(data._id)
-                        console.log()
+                        console.log(body)
+                        const {decryptAES} = require('../config/decryptAES')
+                        const AESresponse = JSON.parse(decryptAES(JSON.parse(body)))
+                        console.log("AESresponse userAccount")
+                        console.log(AESresponse)
                         res.render('./userAccount/account', {data: {
-                            "email": data.email,
-                            "login": data.login,
-                            "id": data._id
+                            "email": AESresponse.email,
+                            "login": AESresponse.login,
+                            "id": AESresponse._id
                         }})
                     }
-                    // resolve(data)
+                    // resolve(data)    
                 }
             )
         }catch{

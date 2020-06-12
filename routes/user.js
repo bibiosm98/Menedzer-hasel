@@ -76,8 +76,12 @@ function getUserAllSites(){
                 body: ""
             },
             (error, response, body) => {
+                console.log("getUserAllSites")
+                console.log(body)
+                const {decryptAES} = require('../config/decryptAES')
+                const AESresponse = decryptAES(JSON.parse(body))
                 if (!error && response.statusCode == 200) {
-                    JSON.parse(body).forEach(element => {
+                    JSON.parse(AESresponse).forEach(element => {
                         data.push(element)
                     });
                     resolve(data)
@@ -147,8 +151,12 @@ function getUserLoginData(id){
                     headers: {'Content-Type': 'application/json', 'token': token}
                 },
                 (error, response, body) => {
+                    console.log("GetUserLoginID")
+                    console.log(body)
+                    const {decryptAES} = require('../config/decryptAES')
+                    const AESresponse = decryptAES(JSON.parse(body))
                     if(!error && response.statusCode == 200) {
-                        data = JSON.parse(body)
+                        data = JSON.parse(AESresponse)
                     }
                     resolve(data)
                 }

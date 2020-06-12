@@ -2,10 +2,10 @@ const express = require('express')
 const router = express.Router()
 const request = require('request')
 const RSA = require('node-rsa')
+const { session } = require('passport')
 const passport = require('passport')
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/authenticated');
 const inicializePassport = require('../config/passport')
-const { session } = require('passport')
 router.post('/', 
     passport.authenticate('local', //'local-token', 
     {
@@ -97,10 +97,8 @@ function getUserAllSites(token){
             (error, response, body) => {
                 if (!error && response.statusCode == 200) {
                     console.log("User AllSites body")
-                    let encryptedKey = Buffer.from(JSON.parse(body).encryptedKey).toString();
-                    let serverAesKey = new RSA(session.key).decrypt(encryptedKey, 'base64')
                     const {decryptAES} = require('../config/decryptAES')
-                    const AESresponse = decryptAES(serverAesKey, JSON.parse(body))
+                    const AESresponse = decryptAES(JSON.parse(body))
                     try{
                         JSON.parse(AESresponse).forEach(element => {
                             data.push(element)

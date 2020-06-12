@@ -93,6 +93,7 @@ function postDataAndGetToken(messageEncrypted){
     let logInLink = 'https://fast-ridge-60024.herokuapp.com/api/SignIn'
     return new Promise(async (resolve, reject) => {
         try{
+            console.log("postDataAndGetToken")
             console.log("SIGNV_IN_ post try")
             request.post({
                 uri: logInLink,
@@ -104,12 +105,12 @@ function postDataAndGetToken(messageEncrypted){
                 json: true,
             }, (error, response, body) => {
                 try{
-                    let encryptedKey = Buffer.from(body.encryptedKey).toString();
-                    let serverAesKey = new RSA(keyRSAprivate).decrypt(encryptedKey, 'base64')
-
+                    console.log(body)
                     const {decryptAES} = require('../config/decryptAES')
-                    const response = decryptAES(serverAesKey, body)
-                    resolve(JSON.parse(response).response)
+                    console.log("AESresponse")
+                    // const AESresponse = decryptAES(JSON.parse(body))
+                    const AESresponse = decryptAES(body)
+                    resolve(JSON.parse(AESresponse).response)
                 }catch(e){
                     console.log('Catch ERROR')
                     resolve('LOGIN NOT FIND')
