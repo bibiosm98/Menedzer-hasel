@@ -34,19 +34,9 @@ module.exports = function(passport, token2){
                     .then((token1) => {
                         console.log('passport authenticate')  
                         token = token1
-                        // getUserAllSites(token1).then((data) => {
-                        //     res.render('./user/allSites', {data: data})
-                        // }).catch((e) => {
-                        //     res.redirect('/')
-                        // })        
-                        //console.log(token1.length)
                         if(token1.length >= 30){
                             return done(null, token1) 
                         }else{
-                            // postDataAndGetToken(messageEncrypted).then((token3) => {
-                                    
-                            //     return done(null, token3) 
-                            // })
                         }
                     }).catch((e) => {
                         res.redirect('/')  // tutaj rzuca błąd, res niew widać

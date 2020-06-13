@@ -1,20 +1,15 @@
 $("#password").on('change', () => {
     const password = $("#password").val()
-    const data = {
-        "password": password
-    }
-    const link = 'https://fast-ridge-60024.herokuapp.com/api/PasswordStrength'
     $.ajax({
-        url         : link,
-        method      : "post",
-        dataType    : "json",
-        contentType : "application/json",
-        data        : JSON.stringify(data)
+        type: "post",
+        url: 'http://localhost:3000/signup/checkStrength',
+        data: {
+            "password": password
+        },
     }).done((res) => {
         console.log(res);
-        $("#strength").html(res.passwordStrength)
+        $("#strength").html(res.strength)
     })
-    console.log("as");
 })
 
 $("#password").on('change', () => {
@@ -32,18 +27,3 @@ function check(){
         $('#btn-submit').prop('disabled', true);
     }
 }
-
-// $("#email-error").on('change', () => {
-    // $('#email-error').text("");
-// })
-
-// $("#container").on('change', ()=>{
-//     if(
-//         $('#pass-1').val() !== '' && 
-//         $('#pass-1').val() === $('#pass-2').val() && 
-//         $('#name').val() !== '' && 
-//         $('#email').val() !== ''
-//     ){
-//         $('#btn-create-user').removeClass("btn-primary-disabled").addClass("btn-primary")
-//     }
-// })

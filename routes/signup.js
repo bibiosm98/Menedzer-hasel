@@ -43,4 +43,33 @@ router.post('/', async (req, res) => {
     }
 })
 
+router.post('/checkStrength', (req, res) => {
+    console.log(req.body.password)
+    request.get('https://fast-ridge-60024.herokuapp.com/api/GetPublicKey', (error, response, body) => {
+        if (!error) {
+            console.log(body)
+            // let key = new RSA(serverPublicKey)
+            // key.setOptions('pkcs1_oaep')
+            // let mess = key.encrypt(message, 'base64');
+            // resolve(mess)
+            const RSA = require('node-rsa')
+            const rsa = new RSA(body)
+            rsa.setOptions('pkcs1_oaep')
+            let encrypted = Buffer.from(rsa.encrypt(JSON.stringify({"password": req.body.password})), 'base64').toString('base64')
+            console.log(encrypted)
+            request.post({
+                url:'https://fast-ridge-60024.herokuapp.com/api/PasswordStrength',
+                body : encrypted,
+                'Content-Type': 'text/plain'
+            },
+            (error, response, body) => {
+                const strength = JSON.parse(body).passwordStrength
+                console.log(body)
+                res.send({"strength": strength})
+            })
+        }
+    })
+})
 module.exports = router
+
+
