@@ -1,35 +1,4 @@
 $("#password").on('change', () => {
-    const password = $("#password").val()
-    let dane = {
-        "password": password
-    }
-    console.log(dane)
-    $.ajax({
-        // url: 'https://menedzerhasel.herokuapp.com/signup/PublicRsaKey',
-        url: 'http://localhost:3000/signup/PublicRsaKey',
-        method: 'get',
-    }).done(async (publicRsaKey) => {
-        console.log("Getting public RSA key from server")
-        console.log(publicRsaKey)
-        // let key = encryptoKey();
-        let key = await importPublicKey(publicRsaKey);
-        console.log("KEY imported = ")
-        console.log(key)
-        
-        $.ajax({
-            type: "post",
-            // url: 'https://menedzerhasel.herokuapp.com/signup/checkStrength',
-            url: 'http://localhost:3000/signup/checkStrength',
-            data: {"password": password}
-            // data: {"password": encrypto(key, dane)}
-        }).done((res) => {
-            console.log(res);
-            $("#strength").html(res.strength)
-        })
-    })
-})
-
-$("#password").on('change', () => {
     check()
 })
 $("#password-repeat").on('change', () => {
@@ -45,129 +14,113 @@ function check(){
     }
 }
 
-
-// -----BEGIN RSA PUBLIC KEY-----
-// MIGJAoGBANHjPrZ866c2dcG5tF3Uacrw5eWMzb3EfqpxuXEjyKga+nxTBM5Q0Ica
-// 3iaSSvzqjWNgU51qga00OJlbV0cVH38X/itKJWOEyKA46PA5/GrWg1znavE6fvC6
-// mF0OaYI/FSwnHwiF/d/QcU7LVdj7pJugLOu6RhFUkGdlzzeWr65FAgMBAAE=
-// -----END RSA PUBLIC KEY-----
-
-// function encryptoKey(){
-//     window.crypto.subtle.generateKey(
-//         {
-//             name: "RSA-OAEP",
-//             modulusLength: 2048, //can be 1024, 2048, or 4096
-//             publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
-//             hash: {name: "SHA-256"}, //can be "SHA-1", "SHA-256", "SHA-384", or "SHA-512"
-//         },
-//         false, //whether the key is extractable (i.e. can be used in exportKey)
-//         ["encrypt", "decrypt"] //must be ["encrypt", "decrypt"] or ["wrapKey", "unwrapKey"]
-//     )
-//     .then(function(key){
-//         //returns a keypair object
-//         console.log(key);
-//         console.log(key.publicKey);
-//         console.log(key.privateKey);
-//         return(key.publicKey)
-//     })
-//     .catch(function(err){
-//         console.error(err);
-//     });
-// }
-
-// function importKey(){
-//     window.crypto.subtle.importKey(
-//         "jwk", //can be "jwk" (public or private), "spki" (public only), or "pkcs8" (private only)
-//         {   //this is an example jwk key, other key types are Uint8Array objects
-//             kty: "RSA",
-//             e: "AQAB",
-//             n: "vGO3eU16ag9zRkJ4AK8ZUZrjbtp5xWK0LyFMNT8933evJoHeczexMUzSiXaLrEFSyQZortk81zJH3y41MBO_UFDO_X0crAquNrkjZDrf9Scc5-MdxlWU2Jl7Gc4Z18AC9aNibWVmXhgvHYkEoFdLCFG-2Sq-qIyW4KFkjan05IE",
-//             alg: "RSA-OAEP-1",
-//             ext: true,
-//         },
-//         {   //these are the algorithm options
-//             name: "RSA-OAEP",
-//             hash: {name: "SHA-1"}, //can be "SHA-1", "SHA-256", "SHA-384", or "SHA-512"
-//         },
-//         false, //whether the key is extractable (i.e. can be used in exportKey)
-//         ["encrypt"] //"encrypt" or "wrapKey" for public key import or
-//                     //"decrypt" or "unwrapKey" for private key imports
-//     )
-//     .then(function(publicKey){
-//         //returns a publicKey (or privateKey if you are importing a private key)
-//         console.log(publicKey);
-//     })
-//     .catch(function(err){
-//         console.error(err);
-//     });
-// }
-
-// function encrypto(publicKey, data){
-
-//     window.crypto.subtle.encrypt(
-//         {
-//             name: "RSA-OAEP",
-//             //label: Uint8Array([...]) //optional
-//         },
-//         publicKey, //from generateKey or importKey above
-//         //data //ArrayBuffer of data you want to encrypt
-//         new ArrayBuffer(data)
-//     )
-//     .then(function(encrypted){
-//         //returns an ArrayBuffer containing the encrypted data
-//         console.log(new Uint8Array(encrypted));
-//     })
-//     .catch(function(err){
-//         console.error(err);
-//     });
-// }
-
-function convertPemToBinary(pem) {
-    var lines = pem.split('\n')
-    console.log("conver pem to binary")
-    var encoded = ''
-    for(var i = 0;i < lines.length;i++){
-      if (lines[i].trim().length > 0 &&
-          lines[i].indexOf('-----BEGIN RSA PRIVATE KEY-----') < 0 &&
-          lines[i].indexOf('-----BEGIN RSA PUBLIC KEY-----') < 0 &&
-          lines[i].indexOf('-----END RSA PRIVATE-----') < 0 &&
-          lines[i].indexOf('-----END RSA PUBLIC KEY-----') < 0) {
-        encoded += lines[i].trim()
-      }
+$("#password").on('change', () => {
+    const password = $("#password").val()
+    let dane = {
+        "password": password
     }
-    return base64StringToArrayBuffer(encoded)
-}
-function base64StringToArrayBuffer(b64str) {
-    console.log("base64StringToArrayBuffer")
-    var byteStr = atob(b64str)
-    var bytes = new Uint8Array(byteStr.length)
-    for (var i = 0; i < byteStr.length; i++) {
-        bytes[i] = byteStr.charCodeAt(i)
+    console.log(dane)
+    // $.ajax({
+    //     // url: 'https://menedzerhasel.herokuapp.com/signup/PublicRsaKey',
+    //     url: 'http://localhost:3000/signup/PublicRsaKey',
+    //     method: 'get',
+    // }).done(async (key) => {
+    //     console.log("Getting public RSA key from server")
+    //     console.log(key.public)
+    //     window.RSAOAEP = {
+    //         name: "RSA-OAEP",
+    //         //NOTE: THIS IS A SMALL MODULUS FOR TESTING ONLY
+    //         //DO NOT USE IT FOR REAL! USE AT LEAST 2048
+    //         modulusLength: 1024,
+    //         publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+    //         hash: {name: "SHA-256"}
+    //     }
+    //     // window.crypto.subtle.importKey(
+    //     //     'spki', 
+    //     //     str2ab(key.public), {
+    //     //       name:  "RSA-OAEP",
+    //     //       hash: {name: 'SHA-256'}
+    //     //     },
+    //     //     false,
+    //     //     ['verify']
+    //     // )
+    //     let arrayw = new Uint8Array([
+    //         48,129,159,48,13,6,9,42,134,72,134,247,13,1,1,1,5,0,3,
+    //         129,141,0,48,129,137,2,129,129,0,182,93,35,213,252,204,
+    //         20,103,91,238,105,199,53,114,24,221,114,210,137,173,88,
+    //         76,205,113,148,148,79,80,59,208,60,75,231,248,78,125,12,
+    //         30,237,226,63,146,157,203,239,60,138,123,234,50,23,174,
+    //         216,33,122,16,53,246,140,254,75,246,205,204,117,204,115,
+    //         29,178,102,139,201,74,177,45,131,183,166,234,61,124,75,
+    //         110,3,70,202,148,95,45,228,94,95,148,2,162,79,146,137,29,
+    //         189,102,75,207,214,116,58,63,171,219,27,5,9,108,16,218,23,
+    //         169,43,181,119,31,172,95,205,180,18,255,203,2,3,1,0,1
+    //     ])
+
+
+    //     let message = password
+    //     let enc = new TextEncoder()
+    //     let enco =  enc.encode(message)
+
+    //     console.log("Array.len = " + arrayw.length)
+    //     window.crypto.subtle.importKey("spki", str2ab(key.public), RSAOAEP, false, ["encrypt"])
+    //     .then(function(publicKEy) {
+    //         console.log('imported public key')
+    //         console.log(publicKEy);
+    //         window.RSAOAEP = {
+    //             name: "RSA-OAEP",
+    //             //NOTE: THIS IS A SMALL MODULUS FOR TESTING ONLY
+    //             //DO NOT USE IT FOR REAL! USE AT LEAST 2048
+    //             modulusLength: 1024,
+    //             // hash: {name: "SHA-256"},
+    //             publicExponent: new Uint8Array([0x01, 0x00, 0x01])
+    //         }
+    //         window.TESTBYTES = new Uint8Array([1, 2, 3, 4]);
+    //         window.crypto.subtle.encrypt(
+    //             RSAOAEP, 
+    //             publicKEy, 
+    //             enco
+    //         ).then((result) => {
+    //             console.log(result)
+    //             console.log(btoa(result))
+    //             console.log(result)
+    //                 let binary = "";
+    //                 let len = result.byteLength;
+    //                 for (let i = 0; i < len; i++) {
+    //                   binary += String.fromCharCode(result[i]);
+    //                 }
+    //                 let encrypted = window.btoa(binary);
+    //                 let buffer = new Uint8Array(result, 0, 5);
+    //                 console.log(buffer)
+                $.ajax({
+                    type: "post",
+                    // url: 'https://menedzerhasel.herokuapp.com/signup/checkStrength',
+                    url: 'http://localhost:3000/signup/checkStrength',
+                    data: {"password": password}//btoa(result)}
+                    // data: {"password": encrypto(key, dane)}
+                }).done((res) => {
+                    console.log(res);
+                    $("#strength").html(res.strength)
+                })
+    //         })
+
+
+    //     }).catch(function(err) {
+    //         console.log('error')
+    //         console.log(err);
+    //     });
+
+
+    // })
+})
+
+function str2ab(str) {
+    const buf = new ArrayBuffer(str.length);
+    const bufView = new Uint8Array(buf);
+    for (let i = 0, strLen = str.length; i < strLen; i++) {
+      bufView[i] = str.charCodeAt(i);
     }
-    console.log("RETURN base64StringToArrayBuffer")
-    console.log(bytes)
-    console.log(bytes.buffer)
-    return bytes.buffer
-}
-
-function importPublicKey(pemKey) {
-    return new Promise(function(resolve) {
-        var importer = crypto.subtle.importKey("spki", convertPemToBinary(pemKey), signAlgorithm, true, ["encrypt"])
-            importer.then(function(key) {
-                console.log("PUBLIC KEY = ")
-                console.log(key)
-                resolve(key)
-            }
-        )
-    })
-}
-
-var signAlgorithm = {
-    name: "RSA-PKCS1",
-    hash: {
-        name: "SHA-256"
-    },
-    modulusLength: 1024,
-    extractable: false,
-    publicExponent: new Uint8Array([1, 0, 1])
+    
+    // return buf;
+    return bufView;
 }
