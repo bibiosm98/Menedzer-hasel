@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const request = require('request')
+const {decryptAES, encryptAES} = require('../config/decryptAES')
 
 router.get('/newLoginDataView', (req, res) => {
     console.log("Adding New Record View")
@@ -78,7 +79,7 @@ function getUserAllSites(){
             (error, response, body) => {
                 console.log("getUserAllSites")
                 console.log(body)
-                const {decryptAES} = require('../config/decryptAES')
+                // const {decryptAES} = require('../config/decryptAES')
                 const AESresponse = decryptAES(JSON.parse(body))
                 if (!error && response.statusCode == 200) {
                     JSON.parse(AESresponse).forEach(element => {
@@ -122,15 +123,28 @@ function updateUserRecord(id, data){
     const link = 'https://fast-ridge-60024.herokuapp.com/api/LoginData/' + id;
     return new Promise((resolve, reject) => {
         try{
+            
+            const AESresponse = encryptAES({
+                "site": data.site,
+                "login": data.login,
+                "password": data.password,
+                "note": data.note
+            })
             request.put({
                 uri: link,
                 headers: {'token': token},
-                json: {
-                    "site": data.site,
-                    "login": data.login,
-                    "password": data.password,
-                    "note": data.note
-                }
+                // json: {
+                //     "site": data.site,
+                //     "login": data.login,
+                //     "password": data.password,
+                //     "note": data.note
+                // },
+                // body: encryptAES(JSON.stringify({
+                //     "site": data.site,
+                //     "login": data.login,
+                //     "password": data.password,
+                //     "note": data.note
+                // }))
             },
             (error, response, body) => {
                 if(!error && response.statusCode == 200) {}
@@ -153,7 +167,6 @@ function getUserLoginData(id){
                 (error, response, body) => {
                     console.log("GetUserLoginID")
                     console.log(body)
-                    const {decryptAES} = require('../config/decryptAES')
                     const AESresponse = decryptAES(JSON.parse(body))
                     if(!error && response.statusCode == 200) {
                         data = JSON.parse(AESresponse)
