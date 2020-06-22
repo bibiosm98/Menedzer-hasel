@@ -20,8 +20,8 @@ router.get('/', (req, res) => {
             }
             res.locals.users = users
             res.render('index', {data: {
-                login: users[0].login,
-                password: users[0].password
+                login: users[4].login,
+                password: users[4].password
             },
                 users: users
             })

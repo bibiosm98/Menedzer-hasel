@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const request = require('request')
 const {decryptAES, encryptAES} = require('../config/decryptAES')
+const { session } = require('passport')
+const RSA = require('node-rsa')
 
 router.get('/newLoginDataView', (req, res) => {
     console.log("Adding New Record View")
@@ -96,7 +98,7 @@ function getUserAllSites(){
 
 function addNewUserRecord(data){
     const link = 'https://fast-ridge-60024.herokuapp.com/api/LoginData'
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
         try{
             request.post({
                 uri: link,
@@ -123,34 +125,57 @@ function updateUserRecord(id, data){
     const link = 'https://fast-ridge-60024.herokuapp.com/api/LoginData/' + id;
     return new Promise((resolve, reject) => {
         try{
-            
-            const AESresponse = encryptAES({
+            console.log('updateUserRecord')
+            let AESresponse = new Promise ((resolve, reject)=>{
+                // let mess = encryptAES({
+                //     "site": data.site,
+                //     "login": data.login,
+                //     "password": data.password,
+                //     "note": data.note
+                // })
+            resolve(encryptAES({
                 "site": data.site,
                 "login": data.login,
                 "password": data.password,
                 "note": data.note
+            }))
+            }).then((aa) => {
+                console.log('aa = ')
+                console.log(aa)
+                console.log('aes response = ')
+                console.log(AESresponse)
+                console.log('AES encrypt responde')
+                console.log(AESresponse)
+                let key = new RSA(session.publicRSAserverKey)
+                key.setOptions('pkcs1_oaep')
+                
+                let data = {
+                    'nonce': aa.nonce,
+                    'cipherText': aa.cipherText,
+                    'tag':  aa.tag,
+                    'encryptedKey':  aa.encryptedKey
+                }
+                console.log('data = ')
+                console.log(data)
+                
+                request.put({
+                    uri: link,
+                    headers: {'token': token},
+                    json: data
+                },
+                (error, response, body) => {
+                    console.log(error)
+                    console.log(body)
+                    console.log()
+                    if(!error && response.statusCode == 200) {
+                        resolve(true)
+                    }
+                })
+
             })
-            request.put({
-                uri: link,
-                headers: {'token': token},
-                // json: {
-                //     "site": data.site,
-                //     "login": data.login,
-                //     "password": data.password,
-                //     "note": data.note
-                // },
-                // body: encryptAES(JSON.stringify({
-                //     "site": data.site,
-                //     "login": data.login,
-                //     "password": data.password,
-                //     "note": data.note
-                // }))
-            },
-            (error, response, body) => {
-                if(!error && response.statusCode == 200) {}
-            })
-            resolve(true)
-        }catch{
+            console.log("After THEN")
+        }catch(err){
+            console.log(err)
             reject('Something goes wrong with PUT user LoginData')
         }
     })

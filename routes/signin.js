@@ -37,6 +37,9 @@ function getPublicKeyFromServer(message){
                 console.log("SIGNV_IN_ GET")
                 if (!error && response.statusCode == 200) {
                     serverPublicKey = body
+                    console.log('signin body = ')
+                    console.log(body)
+                    session.publicRSAserverKey = serverPublicKey
                     let key = new RSA(serverPublicKey)
                     key.setOptions('pkcs1_oaep')
                     resolve(key.encrypt(message, 'base64'))
