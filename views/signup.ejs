@@ -1,6 +1,4 @@
-<h1 class="page-header">Strona rejestracji signup.js</h1>
 <h1 class="page-header">Załóż konto</h1>
-
 
 <div class="display-mid">
     <form action="/signup" method="POST">
@@ -14,17 +12,17 @@
                 <input type="text" name="login" value="<%= data.login %>" required>
             </div>
             <div class="form-item">
-                <label>Password:</label>
+                <label>Hasło:</label>
                 <input id="password" type="text" name="password" value="" required>
-                <div>Password Strength: </div> <div id="strength"></div>
+                <div>Siła hasła: </div> <div id="strength"></div>
             </div>
             <div class="form-item">
-                <label>Password repeat:</label>
+                <label>Powtórz hasło:</label>
                 <input id="password-repeat" type="text" name="password-repeat" value="" required>
             </div>
             <div id="password-error"></div>
         </div>
-        <button id="btn-submit" class="btn btn-primary btn-to-right" type="submit">Create new account</button>
+        <button id="btn-submit" class="btn btn-primary btn-to-right" type="submit">Utwórz nowe konto</button>
     </form>
 <div>
 

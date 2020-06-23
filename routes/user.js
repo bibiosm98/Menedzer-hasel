@@ -141,11 +141,8 @@ function updateUserRecord(id, data){
             }))
             }).then((aa) => {
                 console.log('aa = ')
-                console.log(aa)
-                console.log('aes response = ')
-                console.log(AESresponse)
-                console.log('AES encrypt responde')
-                console.log(AESresponse)
+                //console.log(aa)
+                //console.log('aes response = ')
                 let key = new RSA(session.publicRSAserverKey)
                 key.setOptions('pkcs1_oaep')
                 
@@ -155,8 +152,8 @@ function updateUserRecord(id, data){
                     'tag':  aa.tag,
                     'encryptedKey':  aa.encryptedKey
                 }
-                console.log('data = ')
-                console.log(data)
+                //console.log('data = ')
+                //console.log(data)
                 
                 request.put({
                     uri: link,

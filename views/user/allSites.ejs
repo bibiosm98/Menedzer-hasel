@@ -1,4 +1,4 @@
-<h1 class="page-header">Zalogowany User</h1>
+<h1 class="page-header">Witamy w aplikacji</h1>
 <!-- <h1 class="page-header">AllSites - rekordy posiadanych haseł</h1> -->
 
 <div class="flexbox-container">
@@ -10,7 +10,7 @@
                     <div class="form-item-value"><%= user._id.$oid %></div>
                 </li>
                 <li>
-                    <label>Site: </label>
+                    <label>Strona: </label>
                     <div class="form-item-value"><%= user.site %></div>
                 </li>
                 <li>
@@ -18,17 +18,17 @@
                     <div class="form-item-value"><%= user.login %></div>
                 </li>
                 <li>
-                    <label>PasswordStrength: </label>
+                    <label>Siła hasła: </label>
                     <div class="form-item-value"><%= user.passwordStrength %></div>
                 </li>
                 <li>
-                    <label>Note: </label>
+                    <label>Notatka: </label>
                     <div class="form-item-value"><%= user.note %></div>
                 </li>
                 
-                <button class="btn btn-primary" type="sumbit">Update Password</button>
-                    <a  class="btn btn-primary btn-link" href="/user/getLoginData/<%=user._id.$oid%>">View Password</a>
-                    <a  class="btn btn-danger btn-link" href="/user/deleteLoginData/<%=user._id.$oid%>">Remove Record</a>
+                <button class="btn btn-primary" type="sumbit">Aktualizuj dane</button>
+                    <a  class="btn btn-primary btn-link" href="/user/getLoginData/<%=user._id.$oid%>">Sprawdź hasło</a>
+                    <a  class="btn btn-danger btn-link" href="/user/deleteLoginData/<%=user._id.$oid%>">Usuń dane</a>
             </form>
         </div>
     <% }) %>
