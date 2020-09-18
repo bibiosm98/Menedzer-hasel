@@ -19,7 +19,7 @@
     "express-session": "^1.17.1",
     "js-crypto-rsa": "^0.6.2",
     "node-crypto-gcm": "^1.0.5",
-    "node-forge": "^0.9.1",
+    "node-forge": "^0.10.0",
     "node-rsa": "^1.0.8",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
